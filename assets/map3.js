@@ -11,13 +11,12 @@ let selectedTower = null;
 let canvas;
 
 const towerTypes = {
-  Pistol: { cost: 10, range: 100, damage: 1 + wave * 0.1, cooldown: 20 },
-  Sniper: { cost: 20, range: 150, damage: 34 + wave * 0.1, cooldown: 50 },
-  Colonel: { cost: 40, range: 120, damage: 4 + wave * 0.1, cooldown: 30 },
-  Assault: { cost: 95, range: 130, damage: 3 + wave * 0.1, cooldown: 17 },
-  Destroyer: { cost: 220, range: 200, damage: 7 + wave * 0.1, cooldown: 6 }
+  Pistol: { cost: 10, label: 1, range: 100, damage: 1 + wave * 0.01, cooldown: 20 },
+  Sniper: { cost: 20, label: 2, range: 150, damage: 34 + wave * 0.01, cooldown: 50 },
+  Colonel: { cost: 40, label: 3, range: 120, damage: 4 + wave * 0.01, cooldown: 30 },
+  Assault: { cost: 95, label: 4, range: 130, damage: 3 + wave * 0.01, cooldown: 17 },
+  Destroyer: { cost: 220, label: 5, range: 200, damage: 7 + wave * 0.01, cooldown: 6 }
 };
-
 window.onload = function() {
   canvas = createCanvas(800, 600);
   canvas.parent('game-ui');
@@ -169,7 +168,7 @@ function spawnEnemies() {
   
   for (let i = 0; i < wave * 5; i++) {
     let type = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
-    let scaledHealth = type.health; // No scaling for health or damage
+    let scaledHealth = type.health;
     enemies.push(new Enemy(type.symbol, scaledHealth, type.speed, type.value, type.damage));
   }
 }
@@ -295,6 +294,7 @@ class Tower {
   constructor(x, y, type) {
     this.pos = createVector(x, y);
     this.type = type;
+    this.label = towerTypes[type].label;
     this.range = towerTypes[type].range;
     this.damage = towerTypes[type].damage;
     this.cooldown = towerTypes[type].cooldown;
@@ -316,7 +316,7 @@ class Tower {
   }
   
   show() {
-    let damageSquared = this.damage;
+    let numberLabel = this.label;
     let size = 30;
     fill(0, 0.1);
     noStroke();
@@ -330,7 +330,7 @@ class Tower {
     textSize(12);
     textFont('my-computer-modern');
     textAlign(CENTER, CENTER);
-    text(damageSquared, this.pos.x, this.pos.y);
+    text(numberLabel, this.pos.x, this.pos.y);
   }
   
   showRange() {
