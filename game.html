@@ -5,33 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <title>Endless Math Tower Defense</title>
   
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.11.9/lib/p5.min.js"></script>
-
   
-  <!-- Comment -->
   <script type="text/typescript" src="menu/settings.ts"></script>
   <script type="text/typescript" src="menu/time-schedule.ts"></script>
   <script type="text/typescript" src="menu/analog-data.ts"></script>
   
-  <!-- Comment -->
   <script type="text/javascript" src="boss/script.js"></script>
   <script type="text/javascript" src="console-log.js"></script>
   
-  <!-- Comment -->
   <link rel="stylesheet" href="game-styling.css">
   <Link rel="icon" type="image/x-icon" href="webicon.png">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/dreampulse/computer-modern-web-font@master/fonts.css">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Noto+Sans+Math&family=Quicksand:wght@300..700&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
-<body><span><script src="assets/map2.js"></script></span>
+<body>
+  <span id=""><script type="text/javascript" src="assets/map2.js"></script></span>
   <p class="text-description">Note: if your computer screen is too large, you can try zoom in the page!</p>
   <div id="main-board"><br><br>
   <center><img src="game-logo-beta.png" id="game-logo" alt="Endless Math Tower Defense Logo"><br><br><br>
-  <div id="caption-text">Why can't you just study more often?</div>
+  <div id="caption-text"></div>
   </center></div>
   <div id="game-ui">
     <div class="status-bar">
@@ -51,5 +47,31 @@
     <span id="boss-text"></span>
     <button id="eraser-btn">z &times; <i>f</i> (⋅)<sup><i>x</i></sup> = &infin;</button>
   </div>
+  <script type="text/javascript">
+    const narratorSpeech = ["Why can't you just study more often?", "Keep studying math, there are no offenses.", "Any bored things? Just satisfy your brain with Endless Math Tower Defense", "Focus on yourself, don't try too hard.", "Built with Grok as a game engine.", "Inspired by Exponential Idle.", "You just want to seek some algebraic functions.", "We strongly respect math teachers with giving them support.", "Math is good, physics is good, chemistry is... normal things.", "It's all about math symbols! Including musical symbols.", "LOLOLOLOLOLOLOLOLOLOL", "Well that's spectacular!", "Do your math homework, or else you will be deported from the defense field!", "Who is Nikola Tesla anyways?", "Calculating Graph...", "A mathematized tower defense game where you have to place numbers as towers.", "Albert Einstein or Issac Newton?", "Library is for introverts!", "What in the math is going on here?!", "You're about to be serious.", "Reading math textbook sounds satisfying.", "Lo-Fi music can boost your mood while studying."];
+
+    const mobileUrl = "https://mrthristanezra.github.io/emtd-game/doesnotsupportmobile";
+
+    function start() {
+      randomTagline();
+      checkDeviceAndDisplayError();
+    }
+
+    function randomTagline() {
+      let description = Math.floor(Math.random() * narratorSpeech.length);
+      document.getElementById("caption-text").textContent = narratorSpeech[description];
+    }
+
+    function checkDeviceAndDisplayError() {
+      var isMobile = /Android|webOS|iPhone|/i.test(navigator.userAgent);
+      
+      if (isMobile()) {
+          if (window.location.href.indexOf(mobileUrl) === -1) {
+          window.location.href = mobileUrl; 
+        }
+      }
+    }
+    start();
+  </script>
 </body>
 </html>
