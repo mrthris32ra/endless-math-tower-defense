@@ -5,19 +5,21 @@ let projectiles = [];
 let boss = [];
 let wave = 1;
 let lives = 20;
-let coins = 500;
-let gameState = 'prep';
+let coins = 300;
+let gameState = 'wave';
 let selectedTower = null;
 let canvas;
 
-const towerTypes = {
-  Pistol: { cost: 10, label: 1, range: 100, damage: 1 + wave * 0.01, cooldown: 20 },
-  Sniper: { cost: 20, label: 2, range: 150, damage: 34 + wave * 0.01, cooldown: 50 },
-  Colonel: { cost: 40, label: 3, range: 120, damage: 4 + wave * 0.01, cooldown: 30 },
-  Assault: { cost: 95, label: 4, range: 130, damage: 3 + wave * 0.01, cooldown: 17 },
-  Destroyer: { cost: 220, label: 5, range: 200, damage: 7 + wave * 0.01, cooldown: 6 }
+
+const unit = {
+  Pistol: { cost: 10, label: 2, range: 100, damage: 1, cooldown: 20 },
+  Sniper: { cost: 20, label: 3, range: 500, damage: 225, cooldown: 1000 },
+  Colonel: { cost: 40, label: 5, range: 120, damage: 4, cooldown: 30 },
+  Assault: { cost: 95, label: 7, range: 130, damage: 3, cooldown: 17 },
+  Destroyer: { cost: 220, label: 11, range: 200, damage: 8, cooldown: 6 }
 };
-window.onload = function() {
+
+function drawMap() {
   canvas = createCanvas(800, 600);
   canvas.parent('game-ui');
   path = [
@@ -34,10 +36,10 @@ window.onload = function() {
     });
   });
   document.getElementById('start-wave').addEventListener('click', () => {
-    if (gameState === 'prep') startWave();
+    startWave();
   });
   document.getElementById('eraser-btn').addEventListener('click', () => {
-    coins -= 5500;
+    coins = 0;
     projectiles = [];
   });
 
@@ -94,12 +96,6 @@ function draw() {
     }
   }
   
-  if (gameState === 'wave' && enemies.length === 0 && boss.length === 0) {
-    gameState = 'prep';
-    wave++;
-    spawnBoss(); // Moved call here
-  }
-  
   updateUI();
   
   if (lives <= 0) {
@@ -126,7 +122,7 @@ function updateUI() {
 
 
 function mousePressed() {
-  if (selectedTower && mouseX < 800 && mouseY > 0 && mouseY < 600 && mouseX > 0 && gameState === 'prep') {
+  if (selectedTower && mouseX < 800 && mouseY > 0 && mouseY < 600 && mouseX > 0 && gameState === 'wave') {
     let towerCost = towerTypes[selectedTower].cost;
     if (coins >= towerCost) {
       towers.push(new Tower(mouseX, mouseY, selectedTower));
@@ -138,32 +134,35 @@ function mousePressed() {
 
 function startWave() {
   gameState = 'wave';
+  wave++;
   spawnEnemies();
+  spawnBoss();
 }
 
 function spawnEnemies() {
   const enemyTypes = [
-    { symbol: '+', health: 20, speed: 0.8, value: 5, 'damage': 1 },
-    { symbol: '−', health: 30, speed: 0.7, value: 7, 'damage': 1 },
-    { symbol: '×', health: 40, speed: 1.0, value: 10, 'damage': 1 },
-    { symbol: '÷', health: 70, speed: 1.2, value: 8, 'damage': 1 },
-    { symbol: '√', health: 50, speed: 0.5, value: 15, 'damage': 1 },
-    { symbol: '∑', health: 100, speed: 0.3, value: 20, 'damage': 1 },
-    { symbol: 'π', health: 30, speed: 31.4, value: 12, 'damage': 1 },
-    { symbol: '(+)', health: 120, speed: 0.8, value: 5, 'damage': 1 },
-    { symbol: '(−)', health: 130, speed: 0.7, value: 7, 'damage': 1 },
-    { symbol: '(×)', health: 140, speed: 1.0, value: 10, 'damage': 1 },
-    { symbol: '(÷)', health: 120, speed: 1.2, value: 8, 'damage': 1 },
-    { symbol: '(√)', health: 150, speed: 0.5, value: 15, 'damage': 1 },
-    { symbol: '(∑)', health: 80, speed: 0.3, value: 20, 'damage': 1 },
-    { symbol: '(π)', health: 30, speed: 1.5, value: 12, 'damage': 1 },
-    { symbol: '∞', health: 170, speed: 1.3, value: 50, 'damage': 1 },
-    { symbol: '∄', health: 55, speed: 5.6, value: 25, 'damage': 1 },
-    { symbol: '≀', health: 30, speed: 8.2, value: 20, 'damage': 1 },
-    { symbol: '≀≀', health: 30, speed: 8.2, value: 20, 'damage': 1 },
-    { symbol: '≀≀≀', health: 30, speed: 8.2, value: 20, 'damage': 1 },
-    { symbol: '⅌', health: 1300, speed: 0.8, value: 100, 'damage': 1 },
-    { symbol: 'ℵ', health: 1500, speed: 2.4, value: 250, 'damage': 1 }
+    { symbol: '+', health: 20 + wave * 2, speed: 0.8, value: 1, 'damage': 1 },
+    { symbol: '−', health: 30 + wave * 2, speed: 0.7, value: 1, 'damage': 1 },
+    { symbol: '×', health: 40 + wave * 2, speed: 1.0, value: 1, 'damage': 1 },
+    { symbol: '÷', health: 70 + wave * 2, speed: 1.2, value: 1, 'damage': 1 },
+    { symbol: '√', health: 50 + wave * 2, speed: 0.5, value: 1, 'damage': 1 },
+    { symbol: '∑', health: 100 + wave * 2, speed: 0.3, value: 1, 'damage': 1 },
+    { symbol: 'π', health: 30 + wave * 2, speed: 3.14, value: 1, 'damage': 1 },
+    { symbol: '∫', health: 200 + wave * 2, speed: 1.3, value: 1, 'damage': 1 },
+    { symbol: '(+)', health: 120 + wave * 2, speed: 0.8, value: 1, 'damage': 1 },
+    { symbol: '(−)', health: 150 + wave * 2, speed: 0.7, value: 1, 'damage': 1 },
+    { symbol: '(×)', health: 180 + wave * 2, speed: 1.0, value: 1, 'damage': 1 },
+    { symbol: '(÷)', health: 200 + wave * 2, speed: 1.2, value: 1, 'damage': 1 },
+    { symbol: '(√)', health: 250 + wave * 2, speed: 0.5, value: 1, 'damage': 1 },
+    { symbol: '(∑)', health: 80 + wave * 2, speed: 0.3, value: 1, 'damage': 1 },
+    { symbol: '(π)', health: 30 + wave * 2, speed: 1.5, value: 1, 'damage': 1 },
+    { symbol: '∞', health: 170 + wave * 2, speed: 1.3, value: 1, 'damage': 1 },
+    { symbol: '∄', health: 55 + wave * 2, speed: 5.6, value: 1, 'damage': 1 },
+    { symbol: '≀', health: 30 + wave * 2, speed: 8.2, value: 1, 'damage': 1 },
+    { symbol: '≀≀', health: 30 + wave * 2, speed: 8.2, value: 1, 'damage': 1 },
+    { symbol: '≀≀≀', health: 30 + wave * 2, speed: 8.2, value: 1, 'damage': 1 },
+    { symbol: '⅌', health: 1200 + wave * 2, speed: 0.8, value: 1, 'damage': 1 },
+    { symbol: 'ℵ', health: 1500 + wave * 2, speed: 2.4, value: 1, 'damage': 1 },
   ];
   
   for (let i = 0; i < wave * 5; i++) {
@@ -254,23 +253,23 @@ class Enemy {
   
   show() {
     if (this.symbol === '◉') {
-      fill(0); // Red
+      fill(0);
       textSize(38);
       textStyle(BOLD);
     } else if (this.symbol === '🛆') {
-      fill(0); // Green
+      fill(0);
       textSize(38);
       textStyle(BOLD);
     } else if (this.symbol === '▣') {
-      fill(0); // Blue
+      fill(0);
       textSize(38);
       textStyle(BOLD);
     } else if (this.symbol === '✵🌟✵') {
-      fill(0); // Yellow
+      fill(0);
       textSize(38);
       textStyle(BOLD);
     } else {
-      fill(0); // Default black for regular enemies
+      fill(0);
       textSize(20);
       textStyle(NORMAL);
     }
@@ -341,4 +340,8 @@ class Tower {
     ellipse(this.pos.x, this.pos.y, this.range * 2, this.range * 2);
     drawingContext.setLineDash([]);
   }
+}
+
+window.onload = function() {
+  drawMap();
 }
