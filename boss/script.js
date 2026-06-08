@@ -9,7 +9,7 @@ function deleteText() {
 }
 
 function bossUpgrade() {
-  bossHPMultiplier * 3;
+  bossHPMultiplier * 9;
 }
 
 function spawnBoss() {
@@ -29,7 +29,7 @@ function spawnBoss() {
     boss3wave += 28;
     setTimeout(deleteText, 5000);
   } else if (wave === boss4wave) {
-    boss.push(new Enemy('✵🌟✵', 12400 * bossHPMultiplier, 0.15, 1000, 300));
+    boss.push(new Enemy('✵🌟✵', 24000 * bossHPMultiplier, 0.15, 10000, 300));
     document.getElementById("boss-text").textContent = "Boss: Legendary Star (Final Boss)";
     boss4wave += 28;
     setTimeout(deleteText, 5000);
