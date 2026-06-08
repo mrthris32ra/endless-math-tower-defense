@@ -48,11 +48,6 @@ canvas { display: block;}
 }
 
 
-@font-face {
-	font-family: "my-computer-modern"; 
-	src: url(data:font/truetype;charset=utf-8;base64,YOUR_BASE64_ENCODED_FONT_DATA) format("opentype");
-}
-
 #game-ui { 
 	position: absolute; 
 	top: 6%; 
