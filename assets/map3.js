@@ -123,7 +123,7 @@ function updateUI() {
 
 function mousePressed() {
   if (selectedTower && mouseX < 800 && mouseY > 0 && mouseY < 600 && mouseX > 0 && gameState === 'wave') {
-    let towerCost = towerTypes[selectedTower].cost;
+    let towerCost = unit[selectedTower].cost;
     if (coins >= towerCost) {
       towers.push(new Tower(mouseX, mouseY, selectedTower));
       coins -= towerCost;
@@ -293,10 +293,10 @@ class Tower {
   constructor(x, y, type) {
     this.pos = createVector(x, y);
     this.type = type;
-    this.label = towerTypes[type].label;
-    this.range = towerTypes[type].range;
-    this.damage = towerTypes[type].damage;
-    this.cooldown = towerTypes[type].cooldown;
+    this.label = unit[type].label;
+    this.range = unit[type].range;
+    this.damage = unit[type].damage;
+    this.cooldown = unit[type].cooldown;
     this.timer = 0;
   }
   
