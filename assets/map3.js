@@ -10,6 +10,23 @@ let gameState = 'wave';
 let selectedTower = null;
 let canvas;
 
+window.onload = function() {
+  drawMap();
+
+  document.querySelectorAll('.tower-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedTower = btn.getAttribute('data-type');
+    });
+  });
+  document.getElementById('start-wave').addEventListener('click', () => {
+    startWave();
+    document.getElementById('start-wave').innerHTML = "Start Wave " + (wave + 1);
+  });
+  document.getElementById('eraser-btn').addEventListener('click', () => {
+    coins = 0;
+    projectiles = [];
+  });
+}
 
 const unit = {
   Pistol: { cost: 10, label: 2, range: 100, damage: 1, cooldown: 20 },
@@ -18,6 +35,7 @@ const unit = {
   Assault: { cost: 95, label: 7, range: 130, damage: 3, cooldown: 17 },
   Destroyer: { cost: 220, label: 11, range: 200, damage: 8, cooldown: 6 }
 };
+
 
 function drawMap() {
   canvas = createCanvas(800, 600);
@@ -29,22 +47,8 @@ function drawMap() {
     createVector(320, 60), createVector(320, 421), createVector(400, 421), createVector(400, 60), createVector(480, 60),
     createVector(480, 421), createVector(560, 421), createVector(560, 0)
   ];
-
-  document.querySelectorAll('.tower-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      selectedTower = btn.getAttribute('data-type');
-    });
-  });
-  document.getElementById('start-wave').addEventListener('click', () => {
-    startWave();
-  });
-  document.getElementById('eraser-btn').addEventListener('click', () => {
-    coins = 0;
-    projectiles = [];
-  });
-
-  updateUI();
 };
+
 
 function draw() {
   background('#eee');
@@ -342,6 +346,4 @@ class Tower {
   }
 }
 
-window.onload = function() {
-  drawMap();
-}
+setInterval(updateUI, 1000);
