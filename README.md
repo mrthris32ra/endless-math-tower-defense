@@ -1,5 +1,5 @@
 # endless-math-tower-defense
-A Math-based tower defense (TD) game project that I'm working on. I use Grok as a Game Engine to create the sprites (towers, bosses, and enemies) with reading the script and analyzing the code. Will be fully released in 2027!
+A Math-based tower defense (TD) game project that I'm working on. I used Grok as a Game Engine to create the sprites (towers, bosses, and enemies) with reading the script and analyzing the code. Will be fully released in 2027!
 
 Description: Endless Math Tower Defense is a Mathematics-themed Tower Defense game created by Mr. Thristan Ezra based on his knowledge perception to mathematics. Planned to be released in 2027, this game was still in development until the beta test ends.
 
